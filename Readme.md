@@ -36,8 +36,8 @@ npm run dev
 ```
 
 ### 3. Access the Application
-- **Frontend**: http://localhost:5173
-- **Backend API**: http://localhost:5007
+- **Frontend**: http://135.235.192.34:5173/auth/login
+- **Backend API**: http://135.235.192.34:5007/api/v1/auth/login
 - **Demo Credentials**: 
   - Email: `admin@school-admin.com`
   - Password: `3OU4zn3q6Zh9`
