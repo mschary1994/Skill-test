@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  # ------------------------------
+  # PostgreSQL Database
+  # ------------------------------
+  db:
+    image: postgres:14-alpine
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: school_mgmt
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./seed_db:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d school_mgmt"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ------------------------------
+  # Backend API Service
+  # ------------------------------
+  backend:
+    build:
+      context: ./backend
+    container_name: backend_service
+    restart: always
+    ports:
+      - "5007:5007"
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - ./backend/.env
+    environment:
+      DATABASE_URL: postgresql://admin:admin123@db:5432/school_mgmt
+
+  # ------------------------------
+  # Frontend React + Nginx
+  # ------------------------------
+  frontend:
+    build:
+      context: ./frontend
+    container_name: frontend_service
+    restart: always
+    ports:
+      - "5173:80"   # accessible at http://localhost:5173
+    depends_on:
+      - backend
+    environment:
+      VITE_API_URL: http://localhost:5007   # for React env
+
+volumes:
+  postgres_data:
