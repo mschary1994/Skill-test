@@ -50,11 +50,11 @@ services:
     container_name: frontend_service
     restart: always
     ports:
-      - "5173:80"   # accessible at http://localhost:5173
+      - "5173:80"   
     depends_on:
       - backend
     environment:
-      VITE_API_URL: http://localhost:5007   # for React env
+      VITE_API_URL: http://localhost:5007   
 
 volumes:
   postgres_data:
