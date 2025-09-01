@@ -2,7 +2,7 @@ const cors = require("cors");
 const { env } = require("./env");
 
 const allowedOrigins = [
-  "http://localhost:5173",
+  "http://135.235.192.34:5173",
   env.UI_URL   // e.g. http://135.235.192.34:5173
 ];
 
